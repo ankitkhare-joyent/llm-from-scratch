@@ -1,0 +1,32 @@
+[project]
+name = "tinyllm"
+version = "0.1.0"
+description = "A tiny modern decoder-only transformer trained from scratch on a laptop"
+requires-python = ">=3.13"
+dependencies = [
+    "numpy>=2.5.3",
+    "regex>=2026.9.29",
+    "torch>=2.14.1",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.22,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.17.0",
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["N806"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore:Failed to initialize NumPy"]

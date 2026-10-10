@@ -1,0 +1,38 @@
+[tools]
+python = "3.13.16"
+uv = "0.12.22"
+
+[env]
+PYTHONUNBUFFERED = "1"
+
+[tasks.setup]
+description = "Create the virtualenv and install dependencies"
+run = "uv sync"
+
+[tasks.data]
+description = "Download TinyShakespeare and verify its checksum"
+run = "uv run python -m tinyllm.data"
+
+[tasks.tokenizer]
+description = "Train the byte-level BPE tokenizer"
+run = "uv run python -m tinyllm.tokenizer"
+
+[tasks.train]
+description = "Train the tiny transformer"
+run = "uv run python -m tinyllm.train"
+
+[tasks.sample]
+description = "Generate text from the latest checkpoint"
+run = "uv run python -m tinyllm.sample"
+
+[tasks.test]
+description = "Run lint and the test suite"
+run = ["uv run ruff check .", "uv run ruff format --check .", "uv run pytest -q"]
+
+[tasks.scan]
+description = "Fail if anything tracked looks like a secret or a large artifact"
+run = "scripts/scan-secrets.sh"
+
+[tasks.bench-kv]
+description = "Time generation with and without the KV cache"
+run = "uv run python scripts/bench_kv.py"

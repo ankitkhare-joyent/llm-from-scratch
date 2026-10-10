@@ -1,0 +1,21 @@
+# secrets and local config: never commit
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+mise.local.toml
+# Python / tooling
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+# downloaded data, trained artifacts
+data/*.txt
+data/*.bin
+checkpoints/
+runs/
+.DS_Store
+data/tokenizer.json
+data/*.stamp
