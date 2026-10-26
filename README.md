@@ -64,6 +64,13 @@ Read on GitHub in order. Each links to the code it explains and ends with a diag
 | 06 | [Sampling and the KV cache](docs/06-sampling-and-kv-cache.md) | temperature, top-k/p, 3x faster decoding |
 | 07 | [From tiny to production](docs/07-from-tiny-to-production.md) | SFT, RL, FSDP, serving, what nanochat adds |
 
+## Hands-on lab
+
+[lab/](lab/README.md) has one drill per lesson: predict what a command will print, run it, check the recorded
+answer, then break that component on purpose and fix it (a missing causal mask, an off-by-one target, a KV cache
+that never advances, a learning rate that kills training). Start with the fresh-start sequence at the top of
+[lab/README.md](lab/README.md); `mise run reset` puts you back to a clean slate at any time.
+
 ## The model
 
 | | |
@@ -87,6 +94,7 @@ src/tinyllm/
   sample.py     temperature / top-k / top-p, KV-cached generation
 tests/          fast CPU tests for every stage
 scripts/        bench_kv.py, scan-secrets.sh
+lab/            hands-on drills 00-07 and their helper scripts
 docs/           the lessons
 ```
 

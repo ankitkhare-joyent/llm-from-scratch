@@ -36,3 +36,47 @@ run = "scripts/scan-secrets.sh"
 [tasks.bench-kv]
 description = "Time generation with and without the KV cache"
 run = "uv run python scripts/bench_kv.py"
+
+[tasks.reset]
+description = "Delete everything generated (data, tokenizer, checkpoints, runs, .venv) for a fresh start"
+run = """
+rm -rf .venv checkpoints runs data/tinyshakespeare.txt data/tokenizer.json data/*.bin data/*.stamp
+echo "reset: removed .venv, data downloads, tokenizer, checkpoints and runs"
+if [ -n "$(git status --porcelain src tests)" ]; then
+  echo "note: src/ or tests/ still have edits (a lab break left in place?):"
+  git status --short src tests
+  echo "undo them with: git restore src tests"
+fi
+"""
+
+[tasks."lab:shapes"]
+description = "Lab 00: tensor shapes through the model and where the parameters live"
+run = "uv run python lab/shapes.py"
+
+[tasks."lab:tok"]
+description = "Lab 01: encode text, train tokenizers of other sizes"
+run = "uv run python lab/tok.py"
+
+[tasks."lab:batch"]
+description = "Lab 02: one training batch decoded, plus the data budget"
+run = "uv run python lab/batch.py"
+
+[tasks."lab:rope"]
+description = "Lab 03: RoPE scores depend only on relative distance"
+run = "uv run python lab/rope_check.py"
+
+[tasks."lab:attn"]
+description = "Lab 04: what each attention head looks at"
+run = "uv run python lab/attn_map.py"
+
+[tasks."lab:train"]
+description = "Short training run for the drills, with optional breakage flags"
+run = "uv run python lab/quick_train.py"
+
+[tasks."lab:next"]
+description = "Lab 06: the next-token distribution under temperature and top-p"
+run = "uv run python lab/next_token.py"
+
+[tasks."lab:scale"]
+description = "Lab 07: compute, time and KV-cache arithmetic at real scale"
+run = "uv run python lab/scale.py"

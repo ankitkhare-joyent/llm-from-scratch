@@ -73,10 +73,12 @@ class BPETokenizer:
 
     # ---------------------------------------------------------------- training
     @classmethod
-    def train(cls, text: str, vocab_size: int, verbose: bool = False) -> BPETokenizer:
+    def train(
+        cls, text: str, vocab_size: int, verbose: bool = False, pattern: str = SPLIT_PATTERN
+    ) -> BPETokenizer:
         if vocab_size < 256:
             raise ValueError("vocab_size must be at least 256 (one id per byte)")
-        compiled = regex.compile(SPLIT_PATTERN)
+        compiled = regex.compile(pattern)
         chunk_freq = Counter(compiled.findall(text))
         chunks = {tuple(c.encode("utf-8")): f for c, f in chunk_freq.items()}
         merges: list[Pair] = []
@@ -89,9 +91,9 @@ class BPETokenizer:
             chunks = {_merge(ids, pair, new_id): f for ids, f in chunks.items()}
             merges.append(pair)
             if verbose and (i < 10 or (i + 1) % 64 == 0):
-                tok = cls(merges)
+                tok = cls(merges, pattern)
                 print(f"merge {i + 1:4d}: {tok.vocab[new_id]!r:>16} (seen {freq} times)")
-        return cls(merges)
+        return cls(merges, pattern)
 
     # ---------------------------------------------------------------- encode/decode
     def _encode_chunk_uncached(self, chunk: bytes) -> tuple[int, ...]:
